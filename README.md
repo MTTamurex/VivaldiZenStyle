@@ -13,7 +13,3 @@ Feel free to use this whatever you want.
 
 No JS was used on this.
 
-![Screenshot](https://github.com/MTTamurex/VivaldiZenStyle/blob/main/Vivaldi.jpeg)
-
-https://github.com/user-attachments/assets/6967a216-e2eb-47b0-a44f-81050852d81d
-
