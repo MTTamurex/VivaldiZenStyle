@@ -475,13 +475,20 @@
   padding: 0 !important;
 }
 
-/* Grid Layout for Tabs (Resizing) */
+/* Grid Layout for Tabs (Resizing) - RESPONSIVE */
 .resize {
   display: grid !important;
   flex: unset !important;
   grid-auto-rows: max-content;
   gap: .4em;
-  grid-template-columns: repeat(4, minmax(var(--biggertab), auto)) !important;
+  /* Grid responsivo que se ajusta automaticamente à largura disponível */
+  grid-template-columns: repeat(auto-fit, minmax(var(--PinnedTab), 1fr)) !important;
+  /* Empacotamento denso para melhor aproveitamento do espaço */
+  grid-auto-flow: dense;
+  /* Transição suave para reorganização */
+  transition: grid-template-columns var(--anim-duration) ease-out, gap var(--anim-duration) ease-out;
+  /* Garantir que o grid ocupe toda a largura disponível */
+  width: 100% !important;
 }
 
 .resize .tab-strip,
@@ -494,13 +501,21 @@
 .resize .separator {
   transform: unset !important;
   position: static;
+  /* Transição suave para reposicionamento */
+  transition: transform var(--anim-duration) ease-out;
 }
 
+/* Abas fixas - ocupam 1 coluna no grid responsivo */
 .resize .tab-position.is-pinned {
   grid-column: span 1;
   min-width: 100%;
   max-width: 100%;
   height: var(--PinnedTab);
+  /* Garantir que as abas fixas mantenham tamanho consistente */
+  width: var(--PinnedTab) !important;
+  justify-self: center;
+  /* Centralizar verticalmente no grid */
+  align-self: center;
 }
 
 .resize .tab-position.is-pinned .tab-header {
@@ -513,6 +528,7 @@
   display: none;
 }
 
+/* Abas não-fixas ocupam toda a largura do grid */
 .resize .tab-position:not(.is-pinned),
 .resize .newtab,
 .resize .separator {
@@ -528,6 +544,23 @@
 div#tabs-container {
   padding: 0 0.4rem !important;
   overflow: hidden !important;
+  /* Garantir que o container se expanda para preencher a barra vertical */
+  width: 100% !important;
+  /* Transição suave para redimensionamento */
+  transition: padding var(--anim-duration) ease-out;
+}
+
+/* Otimização para barras verticais estreitas */
+.tabs-left #tabs-container .resize,
+.tabs-right #tabs-container .resize {
+  /* Reduzir gap em barras verticais estreitas */
+  gap: .3em;
+}
+
+/* Garantir que abas fixas mantenham estilo de botão Zen */
+.tab-position.is-pinned {
+  /* Remover margem extra que pode interferir no grid */
+  margin: 0 !important;
 }
 
 /* ==========================================================================
