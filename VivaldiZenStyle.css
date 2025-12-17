@@ -71,8 +71,7 @@
 #browser.win.address-top .toolbar-mainbar:has(.window-buttongroup.on-mainbar),
 #browser.linux.address-top .toolbar-mainbar:has(.window-buttongroup.on-mainbar) {
   min-height: calc(34px / var(--uiZoomLevel));
-  padding-right: calc((28px * 4) / var(--uiZoomLevel));
-  /* Increased space */
+  padding-right: calc((28px * 4) / var(--uiZoomLevel)); /* Increased space */
 }
 
 .density-on .UrlBar-SearchField,
@@ -85,25 +84,27 @@
 .disable-titlebar#browser.win .window-buttongroup,
 #browser.win .window-buttongroup,
 #browser.is-settingspage .window-buttongroup,
-#browser.is-settingspage.win .window-buttongroup {
+#browser.is-settingspage.win .window-buttongroup,
+body .window-buttongroup {
   height: 100% !important;
   display: flex !important;
   align-items: center !important;
   justify-content: flex-end !important;
   gap: 0 !important;
-  z-index: 9999 !important;
-  /* Ensures window controls are ALWAYS on top */
+  z-index: 9999 !important; /* Ensures window controls are ALWAYS on top */
   background-color: transparent !important;
   border: none !important;
   visibility: visible !important;
   opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 /* Window Buttons styling - Generic for all windows */
 .window-buttongroup button,
 #browser.win .window-buttongroup button,
 #browser.is-settingspage .window-buttongroup button,
-#browser.is-settingspage.win .window-buttongroup button {
+#browser.is-settingspage.win .window-buttongroup button,
+body .window-buttongroup button {
   width: 26px !important;
   height: 26px !important;
   min-width: 26px !important;
@@ -119,6 +120,7 @@
   visibility: visible !important;
   opacity: 1 !important;
   flex-shrink: 0 !important;
+  pointer-events: auto !important;
 }
 
 .window-buttongroup button.window-close,
@@ -131,25 +133,35 @@
 .window-buttongroup button svg,
 #browser.win .window-buttongroup button svg,
 #browser.is-settingspage .window-buttongroup button svg,
-#browser.is-settingspage.win .window-buttongroup button svg {
+#browser.is-settingspage.win .window-buttongroup button svg,
+body .window-buttongroup button svg {
   width: 13px !important;
   height: 13px !important;
   min-width: 13px !important;
   min-height: 13px !important;
   display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  margin: auto !important;
 }
 
 /* Speed Dial / Startpage Search Field Specifics */
+.startpage .SearchField,
+.StartPage .SearchField,
+.SpeedDial .SearchField,
+.SpeedDialView .SearchField {
+  background-color: var(--bg) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: none !important;
+  transition: background-color 0.18s ease, backdrop-filter 0.18s ease;
+}
+
 .startpage .SearchField:not(:hover):not(:focus-within),
 .StartPage .SearchField:not(:hover):not(:focus-within),
 .SpeedDial .SearchField:not(:hover):not(:focus-within),
 .SpeedDialView .SearchField:not(:hover):not(:focus-within) {
-  background-color: var(--bg) !important;
   backdrop-filter: var(--blurMed) !important;
   -webkit-backdrop-filter: var(--blurMed) !important;
-  border-radius: var(--radius) !important;
-  box-shadow: none !important;
-  transition: background-color 0.18s ease, backdrop-filter 0.18s ease;
 }
 
 .startpage .SearchField:hover,
@@ -160,11 +172,8 @@
 .SpeedDial .SearchField:focus-within,
 .SpeedDialView .SearchField:hover,
 .SpeedDialView .SearchField:focus-within {
-  background-color: var(--bg) !important;
   backdrop-filter: var(--blurHigh) !important;
   -webkit-backdrop-filter: var(--blurHigh) !important;
-  border-radius: var(--radius) !important;
-  transition: background-color 0.18s ease, backdrop-filter 0.18s ease;
 }
 
 .startpage .SearchField input,
@@ -208,13 +217,8 @@
   margin-right: var(--space);
 }
 
-#panels-container.left {
-  margin-left: var(--space);
-}
-
-#panels-container.right {
-  margin-right: var(--space);
-}
+#panels-container.left { margin-left: var(--space); }
+#panels-container.right { margin-right: var(--space); }
 
 #panels-container #switch {
   padding-bottom: var(--space);
@@ -456,13 +460,8 @@
   margin-top: 0 !important;
 }
 
-.tabs-left #tabs-tabbar-container {
-  margin-right: 0 !important;
-}
-
-.tabs-right #tabs-tabbar-container {
-  margin-left: 0 !important;
-}
+.tabs-left #tabs-tabbar-container { margin-right: 0 !important; }
+.tabs-right #tabs-tabbar-container { margin-left: 0 !important; }
 
 #browser #panels-container.left,
 #browser #panels-container.right {
@@ -481,14 +480,10 @@
   flex: unset !important;
   grid-auto-rows: max-content;
   gap: .4em;
-  /* Grid responsivo que se ajusta automaticamente à largura disponível */
-  grid-template-columns: repeat(auto-fit, minmax(var(--PinnedTab), 1fr)) !important;
-  /* Empacotamento denso para melhor aproveitamento do espaço */
-  grid-auto-flow: dense;
-  /* Transição suave para reorganização */
-  transition: grid-template-columns var(--anim-duration) ease-out, gap var(--anim-duration) ease-out;
-  /* Garantir que o grid ocupe toda a largura disponível */
-  width: 100% !important;
+  grid-template-columns: repeat(auto-fit, minmax(var(--PinnedTab), 1fr)) !important; /* Responsive grid that automatically adjusts to available width */
+  grid-auto-flow: dense; /* Dense packing for better space utilization */
+  transition: grid-template-columns var(--anim-duration) ease-out, gap var(--anim-duration) ease-out; /* Smooth transition for reorganization */
+  width: 100% !important; /* Ensure the grid occupies the full available width */
 }
 
 .resize .tab-strip,
@@ -501,21 +496,18 @@
 .resize .separator {
   transform: unset !important;
   position: static;
-  /* Transição suave para reposicionamento */
-  transition: transform var(--anim-duration) ease-out;
+  transition: transform var(--anim-duration) ease-out; /* Smooth transition for repositioning */
 }
 
-/* Abas fixas - ocupam 1 coluna no grid responsivo */
+/* Pinned tabs - occupy 1 column in the responsive grid */
 .resize .tab-position.is-pinned {
   grid-column: span 1;
   min-width: 100%;
   max-width: 100%;
   height: var(--PinnedTab);
-  /* Garantir que as abas fixas mantenham tamanho consistente */
-  width: var(--PinnedTab) !important;
+  width: var(--PinnedTab) !important; /* Ensure pinned tabs maintain a consistent size */
   justify-self: center;
-  /* Centralizar verticalmente no grid */
-  align-self: center;
+  align-self: center; /* Center vertically in the grid */
 }
 
 .resize .tab-position.is-pinned .tab-header {
@@ -528,7 +520,7 @@
   display: none;
 }
 
-/* Abas não-fixas ocupam toda a largura do grid */
+/* Non-pinned tabs occupy the full width of the grid */
 .resize .tab-position:not(.is-pinned),
 .resize .newtab,
 .resize .separator {
@@ -541,26 +533,22 @@
   margin: 0 !important;
 }
 
-div#tabs-container {
+#tabs-container {
   padding: 0 0.4rem !important;
   overflow: hidden !important;
-  /* Garantir que o container se expanda para preencher a barra vertical */
-  width: 100% !important;
-  /* Transição suave para redimensionamento */
-  transition: padding var(--anim-duration) ease-out;
+  width: 100% !important; /* Ensure the container expands to fill the vertical bar */
+  transition: padding var(--anim-duration) ease-out; /* Smooth transition for resizing */
 }
 
-/* Otimização para barras verticais estreitas */
+/* Optimization for narrow vertical bars */
 .tabs-left #tabs-container .resize,
 .tabs-right #tabs-container .resize {
-  /* Reduzir gap em barras verticais estreitas */
-  gap: .3em;
+  gap: .3em; /* Reduce gap in narrow vertical bars */
 }
 
-/* Garantir que abas fixas mantenham estilo de botão Zen */
+/* Ensure pinned tabs maintain Zen button style */
 .tab-position.is-pinned {
-  /* Remover margem extra que pode interferir no grid */
-  margin: 0 !important;
+  margin: 0 !important; /* Remove extra margin that can interfere with the grid */
 }
 
 /* ==========================================================================
@@ -591,8 +579,6 @@ div#tabs-container {
 
 /* General Tab Styling (Pulse feel) */
 .tab-position,
-.tab-position.is-pinned,
-.tab-position.is-pinned .tab,
 .tab-position .tab {
   border: none !important;
   box-shadow: none !important;
@@ -635,7 +621,6 @@ div#tabs-container {
 #tabs-container .tab-position:not(.accordion-toggle-arrow):not(.is-pinned) .tab {
   max-height: var(--biggertab) !important;
 }
-
 
 /* --- PINNED TABS CONSOLIDATED --- */
 .tab-position.is-pinned {
@@ -732,17 +717,9 @@ div#tabs-container {
 }
 
 @keyframes activeBorderBreath {
-  0% {
-    border-color: rgba(255, 255, 255, 0.06);
-  }
-
-  50% {
-    border-color: rgba(255, 255, 255, 0.34);
-  }
-
-  100% {
-    border-color: rgba(255, 255, 255, 0.06);
-  }
+  0%   { border-color: rgba(255, 255, 255, 0.06); }
+  50%  { border-color: rgba(255, 255, 255, 0.34); }
+  100% { border-color: rgba(255, 255, 255, 0.06); }
 }
 
 /* Subtle glow on active tab */
@@ -752,10 +729,7 @@ div#tabs-container {
 
 /* Click pressure effect */
 .tab-position,
-.tab-position .tab,
-.tab-position.is-pinned,
-.tab-position.is-pinned .tab,
-.tab-position.is-pinned .tab .tab-header {
+.tab-position .tab {
   transition: transform 0.18s ease-out, filter 0.18s ease-out !important;
 }
 
@@ -994,7 +968,6 @@ footer .toolbar-statusbar {
   backdrop-filter: var(--blurLow) !important;
   -webkit-backdrop-filter: var(--blurLow) !important;
   border-radius: var(--radius) !important;
-
   padding-bottom: var(--space) !important;
   margin: 0 0 var(--space) 13px !important;
   border: none !important;
@@ -1002,66 +975,39 @@ footer .toolbar-statusbar {
 
 /* Bookmark Bar with Auto-Hide (Flow-based) */
 .bookmark-bar {
-  /* Glassy Container Style */
   background-color: rgba(0, 0, 0, 0.35) !important;
-  /* Adjusted to match Vivaldi theme better */
   backdrop-filter: var(--blurHigh) !important;
   -webkit-backdrop-filter: var(--blurHigh) !important;
-  /* Slightly stronger border for visibility */
   border-radius: var(--radius);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
-  /* Soft shadow for depth */
-
-  /* Layout & Animation Base */
   display: flex !important;
   align-items: center !important;
   overflow: hidden !important;
   z-index: 1;
-
-  /* Collapsed State (Trigger Zone) */
   max-height: 0 !important;
   min-height: 20px !important;
   opacity: 0;
   margin: 0 4px -19px 4px !important;
-  /* Slightly negative bottom margin to tighten gap */
   padding: 0 6px !important;
-
-  /* Transitions */
-  transition:
-    max-height 0.2s ease-out,
-    opacity 0.15s ease-out,
-    margin 0.2s ease-out,
-    padding 0.2s ease-out,
-    background-color 0.2s ease !important;
+  transition: max-height 0.2s ease-out, opacity 0.15s ease-out, margin 0.2s ease-out, padding 0.2s ease-out, background-color 0.2s ease !important;
   transition-delay: 0s !important;
 }
 
-/* Inner container - observer element that creates the dark rectangle */
-.bookmark-bar .observer {
-  background-color: transparent !important;
-  background: transparent !important;
+.bookmark-bar:hover {
+  max-height: 36px !important;
+  min-height: 36px !important;
+  opacity: 1;
+  margin: 0 4px 4px 4px !important;
+  padding: 0 8px !important;
+  transition-delay: 0s !important;
 }
 
-/* Override any pseudo-elements that might create dark backgrounds */
+.bookmark-bar .observer,
 .bookmark-bar::before,
 .bookmark-bar::after,
 .bookmark-bar .observer::before,
 .bookmark-bar .observer::after {
-  background-color: transparent !important;
   background: transparent !important;
-}
-
-/* Show bookmark bar ONLY when hovering the bar itself (trigger zone) */
-.bookmark-bar:hover {
-  max-height: 36px !important;
-  /* 36px total height */
-  min-height: 36px !important;
-  opacity: 1;
-  margin: 0 4px 4px 4px !important;
-  /* Bottom gap */
-  padding: 0 8px !important;
-  /* No vertical padding, rely on alignment */
-  transition-delay: 0s !important;
 }
 
 /* --- BOOKMARK BUTTONS STYLED LIKE TABS --- */
@@ -1069,22 +1015,15 @@ footer .toolbar-statusbar {
 .bookmark-bar .button-toolbar>button,
 .bookmark-bar .bookmark-item,
 .bookmark-bar .bookmarkbar-item {
-  /* Tab-like Base Style */
   background-color: transparent !important;
-  /* FIXED: Transparent default background */
   border: 1px solid transparent !important;
-  /* Prepare for hover border */
   box-shadow: none !important;
   border-radius: 6px !important;
-  /* Slightly tighter rounding for smaller buttons */
   color: var(--colorFg) !important;
   position: relative !important;
-  transition: transform 0.18s ease-out,
-    filter 0.18s ease-out,
-    background-color 0.25s ease !important;
+  transition: transform 0.18s ease-out, filter 0.18s ease-out, background-color 0.25s ease !important;
 }
 
-/* Glow outline effect (like tabs) */
 .bookmark-bar button::after,
 .bookmark-bar .button-toolbar>button::after,
 .bookmark-bar .bookmark-item::after,
@@ -1108,19 +1047,15 @@ footer .toolbar-statusbar {
   border-color: rgba(255, 255, 255, 0.12);
 }
 
-/* Hover Effects - Mimic Tab Glow/Outline */
 .bookmark-bar button:hover,
 .bookmark-bar .button-toolbar>button:hover,
 .bookmark-bar .bookmark-item:hover,
 .bookmark-bar .bookmarkbar-item:hover {
   background-color: var(--bg) !important;
-  /* Lighter on hover */
   backdrop-filter: var(--blurMed);
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.08) !important;
-  /* Subtle glow like active tabs */
 }
 
-/* Zoom effect on favicons/icons (like tabs) */
 .bookmark-bar button img,
 .bookmark-bar button svg,
 .bookmark-bar .button-toolbar>button img,
@@ -1143,7 +1078,6 @@ footer .toolbar-statusbar {
   transform: scale(1.28) !important;
 }
 
-/* Active/Click State */
 .bookmark-bar button:active,
 .bookmark-bar .button-toolbar>button:active,
 .bookmark-bar .bookmark-item:active,
@@ -1151,7 +1085,6 @@ footer .toolbar-statusbar {
   background-color: rgba(0, 0, 0, 0.25) !important;
   transform: scale(0.96) !important;
   filter: brightness(0.94) !important;
-  /* Click pressure effect like tabs */
 }
 
 .bookmark-bar .separator {
@@ -1296,8 +1229,7 @@ footer .toolbar-statusbar {
 .toolbar-extensions .ExtensionIcon--Hidden:hover {
   border-radius: 50%;
   background: transparent;
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-    filter 0.3s ease !important;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease !important;
 }
 
 /* Loading Simulation (Zen Mode Transition) */
@@ -1326,37 +1258,23 @@ footer .toolbar-statusbar {
 }
 
 @keyframes zenTransition {
-  0% {
-    opacity: 0.8;
-    transform: scale(0.97);
-    filter: blur(8px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: scale(1);
-    filter: blur(0);
-  }
+  0%   { opacity: 0.8; transform: scale(0.97); filter: blur(8px); }
+  100% { opacity: 1;   transform: scale(1);    filter: blur(0);   }
 }
 
 /* --- SPINNING NEW TAB BUTTON --- */
 .newtab button svg {
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-    filter 0.3s ease !important;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease !important;
 }
 
 .newtab button:hover svg {
-  /* Rotates 90 degrees and scales up slightly */
-  transform: rotate(90deg) scale(1.2) !important;
-
-  /* Neon glow */
-  filter: drop-shadow(0 0 5px var(--colorHighlightBg)) !important;
+  transform: rotate(90deg) scale(1.2) !important; /* Rotates 90 degrees and scales up slightly */
+  filter: drop-shadow(0 0 5px var(--colorHighlightBg)) !important; /* Neon glow */
   color: var(--colorHighlightBg) !important;
 }
 
 /* --- FLOATING GLASS LINK PREVIEW --- */
 .StatusInfo {
-  /* Floats above the status bar */
   position: absolute !important;
   bottom: 12px !important;
   left: 12px !important;
@@ -1365,52 +1283,35 @@ footer .toolbar-statusbar {
 
 .StatusInfo .StatusInfo-Content {
   background-color: rgba(20, 20, 20, 0.85) !important;
-  /* Semi-transparent dark background */
   backdrop-filter: blur(10px) !important;
   -webkit-backdrop-filter: blur(10px) !important;
-
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   border-radius: 20px !important;
-  /* Pill shape */
   padding: 4px 12px !important;
-
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-
-  /* High Z-Index to ensure nothing covers it */
-  z-index: 99999 !important;
-
-  /* Entrance animation */
+  z-index: 99999 !important; /* High Z-Index to ensure nothing covers it */
   transition: top 0.2s ease, opacity 0.2s ease !important;
 }
 
 /* ==========================================================================
-   FIND IN PAGE - FLOATING PILL STYLE (CLEAN VERSION)
+   FIND IN PAGE - FLOATING PILL STYLE
    ========================================================================== */
-/* Main Container - Floating Pill */
 .find-in-page {
   position: absolute !important;
   top: 85px !important;
-  /* Adjust this value if it gets too high/low */
   right: 20px !important;
   width: auto !important;
   min-width: 300px !important;
   max-width: 400px !important;
-
-  /* Glassmorphism / Pill Style matching StatusInfo */
   background-color: rgba(20, 20, 20, 0.90) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
-
   border: 1px solid rgba(255, 255, 255, 0.15) !important;
   border-radius: 24px !important;
-  /* Pill shape */
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
-
   padding: 4px 6px !important;
   margin: 0 !important;
   z-index: 99999 !important;
-
   display: flex !important;
   align-items: center !important;
   transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
@@ -1423,7 +1324,6 @@ footer .toolbar-statusbar {
   display: none !important;
 }
 
-/* Toolbar Layout */
 .find-in-page .toolbar,
 .find-in-page>div {
   background: transparent !important;
@@ -1434,14 +1334,12 @@ footer .toolbar-statusbar {
   width: 100% !important;
 }
 
-/* Search Input */
 .find-in-page input[type="text"],
 .find-in-page .SearchField input,
 .find-in-page input.searchfield-input {
   background-color: rgba(255, 255, 255, 0.08) !important;
   border: 1px solid transparent !important;
   border-radius: 20px !important;
-  /* Inner pill */
   padding: 4px 12px !important;
   height: 28px !important;
   color: #eee !important;
@@ -1455,18 +1353,15 @@ footer .toolbar-statusbar {
 .find-in-page .SearchField input:focus {
   background-color: rgba(255, 255, 255, 0.12) !important;
   border-color: rgba(255, 255, 255, 0.3) !important;
-  width: 180px !important;
-  /* Expand on focus */
+  width: 180px !important; /* Expand on focus */
   box-shadow: none !important;
 }
 
-/* Buttons (Prev/Next/Close) */
 .find-in-page button,
 .find-in-page .button-toolbar>button {
   background: transparent !important;
   border: none !important;
-  border-radius: 50% !important;
-  /* Circular buttons */
+  border-radius: 50% !important; /* Circular buttons */
   width: 28px !important;
   height: 28px !important;
   min-width: 28px !important;
@@ -1490,7 +1385,6 @@ footer .toolbar-statusbar {
   background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-/* Close Button Special Style */
 .find-in-page button.close,
 .find-in-page button[title*="Close"] {
   margin-left: 4px !important;
@@ -1502,7 +1396,6 @@ footer .toolbar-statusbar {
   color: white !important;
 }
 
-/* Match Counter */
 .find-in-page .match-count {
   color: #aaa !important;
   font-size: 11px !important;
@@ -1511,7 +1404,6 @@ footer .toolbar-statusbar {
   font-variant-numeric: tabular-nums !important;
 }
 
-/* Checkbox Label (Match Case) */
 .find-in-page label:has(input) {
   font-size: 11px !important;
   color: #aaa !important;
@@ -1530,7 +1422,6 @@ footer .toolbar-statusbar {
   color: #fff !important;
 }
 
-/* Icons */
 .find-in-page button svg {
   width: 14px !important;
   height: 14px !important;
@@ -1538,22 +1429,10 @@ footer .toolbar-statusbar {
 }
 
 /* ==========================================================================
-   FIX: WINDOW BUTTONS IN SETTINGS WINDOW
+   FIXES & RESTORED STYLES
    ========================================================================== */
 
 /* Force window buttons to be visible in settings window */
-#browser.is-settingspage .window-buttongroup,
-#browser.is-settingspage.win .window-buttongroup,
-body .window-buttongroup {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-end !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-/* Specific positioning override for settings window */
 #browser.is-settingspage .window-buttongroup,
 #browser.is-settingspage.win .window-buttongroup {
   position: fixed !important;
@@ -1565,57 +1444,19 @@ body .window-buttongroup {
   align-items: center !important;
 }
 
-#browser.is-settingspage .window-buttongroup button,
-#browser.is-settingspage.win .window-buttongroup button,
-body .window-buttongroup button {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-#browser.is-settingspage .window-buttongroup button svg,
-#browser.is-settingspage.win .window-buttongroup button svg,
-body .window-buttongroup button svg {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  margin: auto !important;
-}
-
 /* Heartbeat Animation for Vivaldi Button */
 @keyframes heartbeat {
-  0% {
-    transform: scale(1);
-  }
-
-  14% {
-    transform: scale(1.12);
-  }
-
-  28% {
-    transform: scale(1);
-  }
-
-  42% {
-    transform: scale(1.12);
-  }
-
-  70% {
-    transform: scale(1);
-  }
+  0%   { transform: scale(1);    }
+  14%  { transform: scale(1.12); }
+  28%  { transform: scale(1);    }
+  42%  { transform: scale(1.12); }
+  70%  { transform: scale(1);    }
 }
 
 .vivaldi:hover svg {
   animation: heartbeat 1.5s ease-in-out infinite both;
   transform-origin: center center;
 }
-
-/* ==========================================================================
-   RESTORED MISSING STYLES
-   ========================================================================== */
 
 /* Zoom + glow effect on window buttons hover - Generic for all windows */
 .window-buttongroup button:hover,
@@ -1627,7 +1468,6 @@ body .window-buttongroup button svg {
   background: transparent !important;
   backdrop-filter: none !important;
   box-shadow: none !important;
-  background-color: transparent;
 }
 
 .window-buttongroup button:hover svg,
