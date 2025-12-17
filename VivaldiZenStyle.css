@@ -1,27 +1,30 @@
 /* ==========================================================================
    VARIABLES & CONFIGURATION
    ========================================================================== */
-:root {
-  --radius: 8px;
 
+:root {
+  /* Core design tokens */
+  --radius: 8px;
+  --anim-duration: 128ms;
+  --space: 5px;
+
+  /* Background colors with transparency */
   --bgDark: rgba(0, 0, 0, 0.4);
   --bgLight: rgba(255, 255, 255, 0.4);
-
   --bgDisabledDark: rgba(0, 0, 0, 0.2);
   --bgDisabledLight: rgba(255, 255, 255, 0.2);
 
+  /* Blur effects - optimized for performance */
   --blurLow: blur(4px);
   --blurMed: blur(6px);
   --blurMedHigh: blur(8px);
   --blurHigh: blur(12px);
 
-  --anim-duration: 128ms;
-  --space: 5px;
-
+  /* Tab sizing */
   --PinnedTab: 46px;
   --biggertab: 35px;
 
-  /* Startpage nav */
+  /* Startpage navigation */
   --startpageNavBtnPrimary: var(--colorFg);
   --startpageNavBtnSecondary: var(--colorFg);
   --startpageNavBtnInactive: transparent;
@@ -30,12 +33,26 @@
   --startpageNavBtnMargin: 10px;
   --startpageNavPaddingOnTop: 10px;
   --startpageNavPaddingOnBottom: 10px;
-  --startpageNavTextShadow: 0 0 2px var(--startpageNavBtnSecondary), 0 0 3px var(--startpageNavBtnSecondary), 0 0 5px var(--startpageNavBtnSecondary);
+  --startpageNavTextShadow: 0 0 2px var(--startpageNavBtnSecondary),
+                            0 0 3px var(--startpageNavBtnSecondary),
+                            0 0 5px var(--startpageNavBtnSecondary);
   --startpageNavIconShadow: drop-shadow(0 0 4px var(--startpageNavBtnSecondary));
   --startpageNavBlur: 6px;
   --startpageNavBlurStrong: 12px;
 
+  /* Zen mode blur */
   --ZenBlur: 10px;
+}
+
+/* Performance optimization: reduce backdrop-filter usage on low-end devices */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --blurLow: blur(2px);
+    --blurMed: blur(3px);
+    --blurMedHigh: blur(4px);
+    --blurHigh: blur(6px);
+    --anim-duration: 64ms;
+  }
 }
 
 /* Theme-aware overlay */
@@ -130,20 +147,17 @@ body .window-buttongroup button {
 }
 
 /* Window icons (SVG) - Generic for all windows */
-.window-buttongroup button svg,
-#browser.win .window-buttongroup button svg,
-#browser.is-settingspage .window-buttongroup button svg,
-#browser.is-settingspage.win .window-buttongroup button svg,
-body .window-buttongroup button svg {
-  width: 13px !important;
-  height: 13px !important;
-  min-width: 13px !important;
-  min-height: 13px !important;
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  margin: auto !important;
+.window-buttongroup button svg {
+  width: 13px;
+  height: 13px;
+  min-width: 13px;
+  min-height: 13px;
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  margin: auto;
 }
+
 
 /* Speed Dial / Startpage Search Field Specifics */
 .startpage .SearchField,
@@ -153,7 +167,7 @@ body .window-buttongroup button svg {
   background-color: var(--bg) !important;
   border-radius: var(--radius) !important;
   box-shadow: none !important;
-  transition: background-color 0.18s ease, backdrop-filter 0.18s ease;
+  transition: background-color 0.18s ease, backdrop-filter 0.18s ease, -webkit-backdrop-filter 0.18s ease !important;
 }
 
 .startpage .SearchField:not(:hover):not(:focus-within),
@@ -233,7 +247,7 @@ body .window-buttongroup button svg {
 }
 
 #panels-container.switcher #switch {
-  visibility: none !important;
+  visibility: hidden !important;
 }
 
 #panels {
@@ -765,6 +779,17 @@ body .window-buttongroup button svg {
 /* Zoom on hover (Normal & Pinned) */
 .tab-position:hover .tab .tab-header .favicon {
   transform: scale(1.28) !important;
+}
+
+/* Restore pinned tab colors and hover states */
+.tab-position.is-pinned .tab {
+  background-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.tab-position.is-pinned .tab:hover {
+  background-color: var(--bg) !important;
+  backdrop-filter: var(--blurMed) !important;
+  -webkit-backdrop-filter: var(--blurMed) !important;
 }
 
 /* AUDIO ICONS LOGIC: Hide favicon only on non-pinned tabs with audio */
@@ -1514,7 +1539,29 @@ footer .toolbar-statusbar {
 .color-behind-tabs-on .SearchField:focus-within,
 .color-behind-tabs-on .MailSearchField-Inner:focus-within,
 .color-behind-tabs-on .UrlBar-AddressField:focus-within {
-  background-color: color-mix(in srgb, var(--bg) 40%, transparent) !important;
+  background-color: color-mix(in srgb, var(--bg) 40%, transparent);
   backdrop-filter: var(--blurMedHigh);
   -webkit-backdrop-filter: var(--blurMedHigh);
+}
+
+/* Reduce animations when user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .tab-position,
+  .tab-position .tab,
+  .window-buttongroup button,
+  .bookmark-bar,
+  .startpage .SearchField,
+  .startpage .startpage-navigation .button-startpage {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+  
+  .tab-position:hover::after,
+  .tab-position:has(.tab.active)::after {
+    animation: none;
+  }
+  
+  .vivaldi:hover svg {
+    animation: none;
+  }
 }
