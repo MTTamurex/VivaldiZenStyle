@@ -24,6 +24,11 @@
   --PinnedTab: 46px;
   --biggertab: 35px;
 
+  /* Vertical tab bar width - ADJUST THIS to center the + button
+     SMALLER value = button moves LEFT
+     LARGER value = button moves RIGHT */
+  --verticalTabBarWidth: 196px;
+
   /* Startpage navigation */
   --startpageNavBtnPrimary: var(--colorFg);
   --startpageNavBtnSecondary: var(--colorFg);
@@ -34,8 +39,8 @@
   --startpageNavPaddingOnTop: 10px;
   --startpageNavPaddingOnBottom: 10px;
   --startpageNavTextShadow: 0 0 2px var(--startpageNavBtnSecondary),
-                            0 0 3px var(--startpageNavBtnSecondary),
-                            0 0 5px var(--startpageNavBtnSecondary);
+    0 0 3px var(--startpageNavBtnSecondary),
+    0 0 5px var(--startpageNavBtnSecondary);
   --startpageNavIconShadow: drop-shadow(0 0 4px var(--startpageNavBtnSecondary));
   --startpageNavBlur: 6px;
   --startpageNavBlurStrong: 12px;
@@ -88,7 +93,8 @@
 #browser.win.address-top .toolbar-mainbar:has(.window-buttongroup.on-mainbar),
 #browser.linux.address-top .toolbar-mainbar:has(.window-buttongroup.on-mainbar) {
   min-height: calc(34px / var(--uiZoomLevel));
-  padding-right: calc((28px * 4) / var(--uiZoomLevel)); /* Increased space */
+  padding-right: calc((28px * 4) / var(--uiZoomLevel));
+  /* Increased space */
 }
 
 .density-on .UrlBar-SearchField,
@@ -108,7 +114,8 @@ body .window-buttongroup {
   align-items: center !important;
   justify-content: flex-end !important;
   gap: 0 !important;
-  z-index: 9999 !important; /* Ensures window controls are ALWAYS on top */
+  z-index: 9999 !important;
+  /* Ensures window controls are ALWAYS on top */
   background-color: transparent !important;
   border: none !important;
   visibility: visible !important;
@@ -231,8 +238,13 @@ body .window-buttongroup button {
   margin-right: var(--space);
 }
 
-#panels-container.left { margin-left: var(--space); }
-#panels-container.right { margin-right: var(--space); }
+#panels-container.left {
+  margin-left: var(--space);
+}
+
+#panels-container.right {
+  margin-right: var(--space);
+}
 
 #panels-container #switch {
   padding-bottom: var(--space);
@@ -474,8 +486,13 @@ body .window-buttongroup button {
   margin-top: 0 !important;
 }
 
-.tabs-left #tabs-tabbar-container { margin-right: 0 !important; }
-.tabs-right #tabs-tabbar-container { margin-left: 0 !important; }
+.tabs-left #tabs-tabbar-container {
+  margin-right: 0 !important;
+}
+
+.tabs-right #tabs-tabbar-container {
+  margin-left: 0 !important;
+}
 
 #browser #panels-container.left,
 #browser #panels-container.right {
@@ -494,10 +511,14 @@ body .window-buttongroup button {
   flex: unset !important;
   grid-auto-rows: max-content;
   gap: .4em;
-  grid-template-columns: repeat(auto-fit, minmax(var(--PinnedTab), 1fr)) !important; /* Responsive grid that automatically adjusts to available width */
-  grid-auto-flow: dense; /* Dense packing for better space utilization */
-  transition: grid-template-columns var(--anim-duration) ease-out, gap var(--anim-duration) ease-out; /* Smooth transition for reorganization */
-  width: 100% !important; /* Ensure the grid occupies the full available width */
+  grid-template-columns: repeat(auto-fit, minmax(var(--PinnedTab), 1fr)) !important;
+  /* Responsive grid that automatically adjusts to available width */
+  grid-auto-flow: dense;
+  /* Dense packing for better space utilization */
+  transition: grid-template-columns var(--anim-duration) ease-out, gap var(--anim-duration) ease-out;
+  /* Smooth transition for reorganization */
+  width: 100% !important;
+  /* Ensure the grid occupies the full available width */
 }
 
 .resize .tab-strip,
@@ -506,11 +527,18 @@ body .window-buttongroup button {
 }
 
 .resize .tab-position,
-.resize .newtab,
 .resize .separator {
   transform: unset !important;
   position: static;
-  transition: transform var(--anim-duration) ease-out; /* Smooth transition for repositioning */
+  transition: transform var(--anim-duration) ease-out;
+  /* Smooth transition for repositioning */
+}
+
+/* Horizontal tabs only - newtab stays in grid */
+.tabs-top .resize .newtab,
+.tabs-bottom .resize .newtab {
+  transform: unset !important;
+  position: static;
 }
 
 /* Pinned tabs - occupy 1 column in the responsive grid */
@@ -519,9 +547,11 @@ body .window-buttongroup button {
   min-width: 100%;
   max-width: 100%;
   height: var(--PinnedTab);
-  width: var(--PinnedTab) !important; /* Ensure pinned tabs maintain a consistent size */
+  width: var(--PinnedTab) !important;
+  /* Ensure pinned tabs maintain a consistent size */
   justify-self: center;
-  align-self: center; /* Center vertically in the grid */
+  align-self: center;
+  /* Center vertically in the grid */
 }
 
 .resize .tab-position.is-pinned .tab-header {
@@ -536,8 +566,14 @@ body .window-buttongroup button {
 
 /* Non-pinned tabs occupy the full width of the grid */
 .resize .tab-position:not(.is-pinned),
-.resize .newtab,
 .resize .separator {
+  grid-column: 1 / -1;
+  min-width: 100%;
+}
+
+/* Horizontal tabs only - newtab in grid */
+.tabs-top .resize .newtab,
+.tabs-bottom .resize .newtab {
   grid-column: 1 / -1;
   min-width: 100%;
 }
@@ -550,19 +586,113 @@ body .window-buttongroup button {
 #tabs-container {
   padding: 0 0.4rem !important;
   overflow: hidden !important;
-  width: 100% !important; /* Ensure the container expands to fill the vertical bar */
-  transition: padding var(--anim-duration) ease-out; /* Smooth transition for resizing */
+  width: 100% !important;
+  /* Ensure the container expands to fill the vertical bar */
+  transition: padding var(--anim-duration) ease-out;
+  /* Smooth transition for resizing */
 }
 
-/* Optimization for narrow vertical bars */
+/* ==========================================================================
+   VERTICAL TABS OVERFLOW & SCROLLBAR FIX
+   ========================================================================== */
+
+/* Enable vertical scrolling for tab container in vertical tab bars */
+.tabs-left #tabs-container,
+.tabs-right #tabs-container {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+/* Scrollbar styling for vertical tabs */
+.tabs-left #tabs-container::-webkit-scrollbar,
+.tabs-right #tabs-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tabs-left #tabs-container::-webkit-scrollbar-track,
+.tabs-right #tabs-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tabs-left #tabs-container::-webkit-scrollbar-thumb,
+.tabs-right #tabs-container::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.tabs-left #tabs-container::-webkit-scrollbar-thumb:hover,
+.tabs-right #tabs-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.35);
+}
+
+/* Vertical tabs optimization - preserve grid but reduce gap */
 .tabs-left #tabs-container .resize,
 .tabs-right #tabs-container .resize {
-  gap: .3em; /* Reduce gap in narrow vertical bars */
+  gap: .3em;
+  gap: .3em;
+  /* Reduce gap in narrow vertical bars */
+}
+
+/* Fix newtab button to stay at bottom of vertical tab bar */
+.tabs-left #tabs-tabbar-container,
+.tabs-right #tabs-tabbar-container {
+  display: flex !important;
+  flex-direction: column !important;
+  position: relative !important;
+  padding-bottom: 50px !important;
+  /* Reserve space for newtab button */
+}
+
+/* Make tabs container scrollable and take remaining space */
+.tabs-left #tabs-container,
+.tabs-right #tabs-container {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Fix newtab at bottom of screen for vertical tabs - centered */
+.tabs-left #tabs-tabbar-container .newtab,
+.tabs-right #tabs-tabbar-container .newtab,
+.tabs-left .resize .newtab,
+.tabs-right .resize .newtab {
+  position: fixed !important;
+  bottom: calc(var(--space, 5px) + 6px) !important;
+  z-index: 1000 !important;
+  background-color: var(--colorBg) !important;
+  border-radius: var(--radius) !important;
+  margin: 0 !important;
+  grid-column: unset !important;
+  grid-row: unset !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Position for left tabs - use variable for responsive centering */
+.tabs-left #tabs-tabbar-container .newtab,
+.tabs-left .resize .newtab {
+  left: calc((var(--verticalTabBarWidth, 230px) / 2) - 20px + var(--space, 5px)) !important;
+  right: auto !important;
+  transform: none !important;
+}
+
+/* Position for right tabs */
+.tabs-right #tabs-tabbar-container .newtab,
+.tabs-right .resize .newtab {
+  right: calc((var(--verticalTabBarWidth, 230px) / 2) - 20px + var(--space, 5px)) !important;
+  left: auto !important;
+  transform: none !important;
 }
 
 /* Ensure pinned tabs maintain Zen button style */
 .tab-position.is-pinned {
-  margin: 0 !important; /* Remove extra margin that can interfere with the grid */
+  margin: 0 !important;
+  /* Remove extra margin that can interfere with the grid */
 }
 
 /* ==========================================================================
@@ -731,9 +861,17 @@ body .window-buttongroup button {
 }
 
 @keyframes activeBorderBreath {
-  0%   { border-color: rgba(255, 255, 255, 0.06); }
-  50%  { border-color: rgba(255, 255, 255, 0.34); }
-  100% { border-color: rgba(255, 255, 255, 0.06); }
+  0% {
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+
+  50% {
+    border-color: rgba(255, 255, 255, 0.34);
+  }
+
+  100% {
+    border-color: rgba(255, 255, 255, 0.06);
+  }
 }
 
 /* Subtle glow on active tab */
@@ -1283,8 +1421,17 @@ footer .toolbar-statusbar {
 }
 
 @keyframes zenTransition {
-  0%   { opacity: 0.8; transform: scale(0.97); filter: blur(8px); }
-  100% { opacity: 1;   transform: scale(1);    filter: blur(0);   }
+  0% {
+    opacity: 0.8;
+    transform: scale(0.97);
+    filter: blur(8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
 }
 
 /* --- SPINNING NEW TAB BUTTON --- */
@@ -1293,8 +1440,10 @@ footer .toolbar-statusbar {
 }
 
 .newtab button:hover svg {
-  transform: rotate(90deg) scale(1.2) !important; /* Rotates 90 degrees and scales up slightly */
-  filter: drop-shadow(0 0 5px var(--colorHighlightBg)) !important; /* Neon glow */
+  transform: rotate(90deg) scale(1.2) !important;
+  /* Rotates 90 degrees and scales up slightly */
+  filter: drop-shadow(0 0 5px var(--colorHighlightBg)) !important;
+  /* Neon glow */
   color: var(--colorHighlightBg) !important;
 }
 
@@ -1314,7 +1463,8 @@ footer .toolbar-statusbar {
   border-radius: 20px !important;
   padding: 4px 12px !important;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
-  z-index: 99999 !important; /* High Z-Index to ensure nothing covers it */
+  z-index: 99999 !important;
+  /* High Z-Index to ensure nothing covers it */
   transition: top 0.2s ease, opacity 0.2s ease !important;
 }
 
@@ -1378,7 +1528,8 @@ footer .toolbar-statusbar {
 .find-in-page .SearchField input:focus {
   background-color: rgba(255, 255, 255, 0.12) !important;
   border-color: rgba(255, 255, 255, 0.3) !important;
-  width: 180px !important; /* Expand on focus */
+  width: 180px !important;
+  /* Expand on focus */
   box-shadow: none !important;
 }
 
@@ -1386,7 +1537,8 @@ footer .toolbar-statusbar {
 .find-in-page .button-toolbar>button {
   background: transparent !important;
   border: none !important;
-  border-radius: 50% !important; /* Circular buttons */
+  border-radius: 50% !important;
+  /* Circular buttons */
   width: 28px !important;
   height: 28px !important;
   min-width: 28px !important;
@@ -1471,11 +1623,25 @@ footer .toolbar-statusbar {
 
 /* Heartbeat Animation for Vivaldi Button */
 @keyframes heartbeat {
-  0%   { transform: scale(1);    }
-  14%  { transform: scale(1.12); }
-  28%  { transform: scale(1);    }
-  42%  { transform: scale(1.12); }
-  70%  { transform: scale(1);    }
+  0% {
+    transform: scale(1);
+  }
+
+  14% {
+    transform: scale(1.12);
+  }
+
+  28% {
+    transform: scale(1);
+  }
+
+  42% {
+    transform: scale(1.12);
+  }
+
+  70% {
+    transform: scale(1);
+  }
 }
 
 .vivaldi:hover svg {
@@ -1546,6 +1712,7 @@ footer .toolbar-statusbar {
 
 /* Reduce animations when user prefers reduced motion */
 @media (prefers-reduced-motion: reduce) {
+
   .tab-position,
   .tab-position .tab,
   .window-buttongroup button,
@@ -1555,12 +1722,12 @@ footer .toolbar-statusbar {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
   }
-  
+
   .tab-position:hover::after,
   .tab-position:has(.tab.active)::after {
     animation: none;
   }
-  
+
   .vivaldi:hover svg {
     animation: none;
   }
